@@ -27,7 +27,7 @@ const meetings = [
 ]
 const days = [
     { date: '2024-12-29', isToday: true },
-    { date: '2024-12-30' },
+    { date: '2024-12-30', isSelected: false },
     { date: '2024-12-31' },
     { date: '2025-01-01', isCurrentMonth: true },
     { date: '2025-01-02', isCurrentMonth: true },
