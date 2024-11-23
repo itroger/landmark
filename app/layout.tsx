@@ -1,14 +1,20 @@
 'use client'
 import './globals.css'
-import Header from "../components/header";
+import {usePathname} from "next/navigation";
 
 export default function RootLayout({ children }: {
     children: React.ReactNode
 }) {
+    const pathname = usePathname()
+
     return (
         <html lang="en">
         <body className='bg-white'>
-        <Header/>
+        <header className="absolute inset-x-0 top-0 z-50">
+            <nav aria-label="Global" className="flex items-center justify-center p-6 lg:px-8">
+                { pathname !== '/' && <a href='/' className="lg:flex lg:gap-x-12">樱花之旅</a> }
+            </nav>
+        </header>
         <div className="relative isolate px-6 pt-14 lg:px-8">
             <div
                 aria-hidden="true"
