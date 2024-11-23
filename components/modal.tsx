@@ -20,7 +20,10 @@ export default function Modal(props: any) {
                         className="w-full relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-full sm:max-w-sm sm:p-6 data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95"
                     >
                         <div className='w-full'>
-                            <DialogTitle>深圳航空 ZH661</DialogTitle>
+                            <DialogTitle className='flex justify-between'>
+                                <span>深圳航空 ZH661</span>
+                                <span>2024-12-29 星期日</span>
+                            </DialogTitle>
                             <div className="w-full flex justify-between mt-3 text-center">
                                 <div className='flex flex-col gap-1 items-start'>
                                     <div className='text-3xl'>8:30</div>
@@ -32,7 +35,7 @@ export default function Modal(props: any) {
                                 </div>
                             </div>
                         </div>
-                        <div className='flex justify-between border-t-chart-1 border-t mt-2 pt-2'>
+                        <div className='flex justify-between border-t-gray-200 border-t mt-2 pt-2'>
                             <div className='flex flex-col gap-1 items-center'>
                                 <span className='text-sm'>登机口</span>
                                 <span className='font-bold'>待定</span>

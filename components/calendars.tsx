@@ -40,7 +40,7 @@ function classNames(...classes) {
 }
 
 export default function Calendars() {
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
 
     return (
         <div>
