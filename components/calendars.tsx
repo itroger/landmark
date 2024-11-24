@@ -1,6 +1,6 @@
 'use client'
 import { MdPlace } from "react-icons/md";
-import { FaPlane, FaTrain, FaBus } from "react-icons/fa";
+import { FaPlane, FaTrain, FaBus, FaWalking } from "react-icons/fa";
 import Airline from "./airline";
 import { useState } from "react";
 import Hotel from "./hotel";
@@ -42,6 +42,17 @@ const meetings = [
     },
     {
         id: 4,
+        date: '2024.12.29',
+        name: '花见小路',
+        english: '花见小路',
+        location: '京都',
+        icon: <FaTrain />,
+        content: 'KH 京阪本线, 伏见稻荷 - 祇园四条',
+        modal: 'site',
+        modalName: 'inari',
+    },
+    {
+        id: 5,
         date: '2024.12.30',
         name: '清水寺',
         english: '清水寺',
@@ -52,15 +63,15 @@ const meetings = [
         modalName: 'kiyomizudera',
     },
     {
-        id: 5,
+        id: 6,
         date: '2024.12.30',
         name: '三年坂 & 二年坂',
         english: '三年坂 & 二年坂',
         location: '京都',
-        icon: <FaBus />,
-        content: '京都站中央出口, D2区, 206路',
+        icon: <FaWalking />,
+        content: 'City Walk',
         modal: 'site',
-        modalName: 'kiyomizudera',
+        modalName: 'san',
     },
 ]
 const initDays = [
