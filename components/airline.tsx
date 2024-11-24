@@ -3,7 +3,7 @@
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import { CheckIcon } from '@heroicons/react/24/outline'
 
-export default function Modal(props: any) {
+export default function Airline(props: any) {
     const { open, setOpen } = props;
 
     return (

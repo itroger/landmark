@@ -1,10 +1,9 @@
 'use client'
-import {
-    CalendarIcon,
-    MapPinIcon,
-} from '@heroicons/react/20/solid'
-import Modal from "./modal";
-import {useState} from "react";
+import { CalendarIcon, MapPinIcon } from '@heroicons/react/20/solid'
+import Airline from "./airline";
+import { useState } from "react";
+import Hotel from "./hotel";
+import Site from "./site";
 
 const meetings = [
     {
@@ -14,6 +13,7 @@ const meetings = [
         datetime: '2022-01-10T17:00',
         name: '深圳宝安国际机场T3 - 大阪关西国际机场T1',
         location: '深圳 - 大阪',
+        modal: 'airline'
     },
     {
         id: 2,
@@ -22,17 +22,26 @@ const meetings = [
         datetime: '2022-01-10T17:00',
         name: '大阪关西国际机场T1 - 京都站希尔顿逸林酒店',
         location: '大阪 - 京都',
+        modal: 'hotel'
     },
-    // More meetings...
+    {
+        id: 3,
+        date: '2024.12.29',
+        time: '13:00',
+        datetime: '2022-01-10T17:00',
+        name: '清水寺',
+        location: '京都',
+        modal: 'site'
+    },
 ]
-const days = [
-    { date: '2024-12-29', isToday: true },
-    { date: '2024-12-30', isSelected: false },
-    { date: '2024-12-31' },
-    { date: '2025-01-01', isCurrentMonth: true },
-    { date: '2025-01-02', isCurrentMonth: true },
-    { date: '2025-01-03', isCurrentMonth: true },
-    { date: '2025-01-04', isCurrentMonth: true },
+const initDays = [
+    { date: '2024.12.29', isToday: true },
+    { date: '2024.12.30', isSelected: true },
+    { date: '2024.12.31' },
+    { date: '2025.01.01', isCurrentMonth: true },
+    { date: '2025.01.02', isCurrentMonth: true },
+    { date: '2025.01.03', isCurrentMonth: true },
+    { date: '2025.01.04', isCurrentMonth: true },
 ]
 
 function classNames(...classes) {
@@ -40,11 +49,41 @@ function classNames(...classes) {
 }
 
 export default function Calendars() {
-    const [open, setOpen] = useState(false);
+    const [airline, setAirline] = useState(false);
+    const [hotel, setHotel] = useState(false);
+    const [site, setSite] = useState(false);
+    const [days, setDays] = useState(initDays);
+
+    const handleClick = (modal: string) => {
+        switch (modal) {
+            case 'airline': {
+                setAirline(true);
+                break;
+            }
+            case 'hotel': {
+                setHotel(true);
+                break;
+            }
+            case 'site': {
+                setSite(true);
+                break;
+            }
+
+        }
+    }
+
+    const handleDate = (day) => {
+        initDays.forEach(item => {
+            item.isSelected = day.date === item.date;
+        })
+        setDays([...initDays]);
+    }
 
     return (
         <div>
-            <Modal open={open} setOpen={setOpen} />
+            <Airline open={airline} setOpen={setAirline} />
+            <Hotel open={hotel} setOpen={setHotel} />
+            <Site open={site} setOpen={setSite} />
             <div className="lg:grid lg:grid-cols-12 lg:gap-x-16">
                 <div className="mt-10 text-center lg:col-start-8 lg:col-end-13 lg:row-start-1 lg:mt-9 xl:col-start-9">
                     <div className="flex items-center text-gray-900">
@@ -64,6 +103,7 @@ export default function Calendars() {
                             <button
                                 key={day.date}
                                 type="button"
+                                onClick={() => handleDate(day)}
                                 className={classNames(
                                     'py-1.5 hover:bg-gray-100 focus:z-10',
                                     day.isCurrentMonth ? 'bg-white' : 'bg-gray-50',
@@ -86,21 +126,15 @@ export default function Calendars() {
                                         day.isSelected && !day.isToday && 'bg-gray-900',
                                     )}
                                 >
-                                    {day.date.split('-').pop().replace(/^0/, '')}
+                                    {day.date.split('.').pop().replace(/^0/, '')}
                                 </time>
                             </button>
                         ))}
                     </div>
-                    <button
-                        type="button"
-                        className="mt-8 w-full rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    >
-                        Add event
-                    </button>
                 </div>
                 <ol className="mt-4 divide-y divide-gray-100 text-sm/6 lg:col-span-7 xl:col-span-8">
                     {meetings.map((meeting) => (
-                        <li key={meeting.id} className="relative flex space-x-6 py-6 xl:static" onClick={() => setOpen(true)}>
+                        <li key={meeting.id} className="relative flex space-x-6 py-6 xl:static" onClick={() => handleClick(meeting.modal)}>
                             <div className="flex-auto">
                                 <h3 className="pr-10 font-semibold text-gray-900 xl:pr-0">{meeting.name}</h3>
                                 <dl className="mt-2 flex flex-col text-gray-500 xl:flex-row">
