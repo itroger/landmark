@@ -73,10 +73,18 @@
   background-repeat: no-repeat;
 }
 
-.site {
+.kiyomizudera {
   width: 100%;
   height: 200px;
   background-size: 100% 100%;
   background-image: url("../images/kiyomizudera.webp");
+  background-repeat: no-repeat;
+}
+
+.inari {
+  width: 100%;
+  height: 200px;
+  background-size: 100% 100%;
+  background-image: url("../images/inari.jpg");
   background-repeat: no-repeat;
 }

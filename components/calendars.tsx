@@ -1,5 +1,6 @@
 'use client'
-import { CalendarIcon, MapPinIcon } from '@heroicons/react/20/solid'
+import { MdPlace } from "react-icons/md";
+import { FaPlane, FaTrain, FaBus } from "react-icons/fa";
 import Airline from "./airline";
 import { useState } from "react";
 import Hotel from "./hotel";
@@ -9,35 +10,63 @@ const meetings = [
     {
         id: 1,
         date: '2024.12.29',
-        time: '8:00',
-        datetime: '2022-01-10T17:00',
-        name: '深圳宝安国际机场T3 - 大阪关西国际机场T1',
-        location: '深圳 - 大阪',
-        modal: 'airline'
+        name: '大阪关西国际机场T1',
+        english: '関西空港 T1',
+        location: '大阪',
+        icon: <FaPlane />,
+        content: '深圳宝安国际机场T3, 深圳航空, ZH661, 8:30',
+        modal: 'airline',
+        modalName: '',
     },
     {
         id: 2,
         date: '2024.12.29',
-        time: '13:00',
-        datetime: '2022-01-10T17:00',
-        name: '大阪关西国际机场T1 - 京都站希尔顿逸林酒店',
-        location: '大阪 - 京都',
-        modal: 'hotel'
+        name: '京都站希尔顿逸林酒店',
+        english: 'ダブルツリーbyヒルトン京都駅',
+        location: '京都',
+        icon: <FaTrain />,
+        content: 'JR 西日本特急列车 Haruka, 关西空港 - 京都',
+        modal: 'hotel',
+        modalName: '',
     },
     {
         id: 3,
         date: '2024.12.29',
-        time: '13:00',
-        datetime: '2022-01-10T17:00',
-        name: '清水寺',
+        name: '伏见稻荷大社',
+        english: '伏見稲荷大社',
         location: '京都',
-        modal: 'site'
+        icon: <FaTrain />,
+        content: 'JR 奈良线, 京都 - 稻荷',
+        modal: 'site',
+        modalName: 'inari',
+    },
+    {
+        id: 4,
+        date: '2024.12.30',
+        name: '清水寺',
+        english: '清水寺',
+        location: '京都',
+        icon: <FaBus />,
+        content: '京都站中央出口, D2区, 206路',
+        modal: 'site',
+        modalName: 'kiyomizudera',
+    },
+    {
+        id: 5,
+        date: '2024.12.30',
+        name: '三年坂 & 二年坂',
+        english: '三年坂 & 二年坂',
+        location: '京都',
+        icon: <FaBus />,
+        content: '京都站中央出口, D2区, 206路',
+        modal: 'site',
+        modalName: 'kiyomizudera',
     },
 ]
 const initDays = [
-    { date: '2024.12.29', isToday: true },
-    { date: '2024.12.30', isSelected: true },
-    { date: '2024.12.31' },
+    { date: '2024.12.29', isCurrentMonth: true, isToday: true, isSelected: true },
+    { date: '2024.12.30', isCurrentMonth: true, isSelected: false },
+    { date: '2024.12.31', isCurrentMonth: true },
     { date: '2025.01.01', isCurrentMonth: true },
     { date: '2025.01.02', isCurrentMonth: true },
     { date: '2025.01.03', isCurrentMonth: true },
@@ -52,9 +81,11 @@ export default function Calendars() {
     const [airline, setAirline] = useState(false);
     const [hotel, setHotel] = useState(false);
     const [site, setSite] = useState(false);
+    const [siteName, setSiteName] = useState('inari');
     const [days, setDays] = useState(initDays);
+    const [current, setCurrent] = useState(initDays[0].date);
 
-    const handleClick = (modal: string) => {
+    const handleClick = (modal: string, modalName: string) => {
         switch (modal) {
             case 'airline': {
                 setAirline(true);
@@ -65,6 +96,7 @@ export default function Calendars() {
                 break;
             }
             case 'site': {
+                setSiteName(modalName);
                 setSite(true);
                 break;
             }
@@ -77,13 +109,14 @@ export default function Calendars() {
             item.isSelected = day.date === item.date;
         })
         setDays([...initDays]);
+        setCurrent(day.date);
     }
 
     return (
         <div>
             <Airline open={airline} setOpen={setAirline} />
             <Hotel open={hotel} setOpen={setHotel} />
-            <Site open={site} setOpen={setSite} />
+            <Site open={site} setOpen={setSite} siteName={siteName} />
             <div className="lg:grid lg:grid-cols-12 lg:gap-x-16">
                 <div className="mt-10 text-center lg:col-start-8 lg:col-end-13 lg:row-start-1 lg:mt-9 xl:col-start-9">
                     <div className="flex items-center text-gray-900">
@@ -133,28 +166,21 @@ export default function Calendars() {
                     </div>
                 </div>
                 <ol className="mt-4 divide-y divide-gray-100 text-sm/6 lg:col-span-7 xl:col-span-8">
-                    {meetings.map((meeting) => (
-                        <li key={meeting.id} className="relative flex space-x-6 py-6 xl:static" onClick={() => handleClick(meeting.modal)}>
+                    {meetings.filter(item => item.date === current).map((meeting) => (
+                        <li key={meeting.id} className="relative flex space-x-6 py-6 xl:static" onClick={() => handleClick(meeting.modal, meeting.modalName)}>
                             <div className="flex-auto">
-                                <h3 className="pr-10 font-semibold text-gray-900 xl:pr-0">{meeting.name}</h3>
+                                <h3 className="flex flex-col gap-2 pr-10 font-semibold text-gray-900 xl:pr-0">
+                                    <span>{meeting.name}</span>
+                                    <span className='text-gray-500'>{meeting.english}</span>
+                                </h3>
                                 <dl className="mt-2 flex flex-col text-gray-500 xl:flex-row">
-                                    <div className="flex items-start space-x-3">
-                                        <dt className="mt-0.5">
-                                            <span className="sr-only">Date</span>
-                                            <CalendarIcon className="size-5 text-gray-400" aria-hidden="true" />
-                                        </dt>
-                                        <dd>
-                                            <time dateTime={meeting.datetime}>
-                                                {meeting.date} {meeting.time}
-                                            </time>
-                                        </dd>
+                                    <div className="flex items-center gap-2">
+                                        <span>{meeting.icon}</span>
+                                        <span>{meeting.content}</span>
                                     </div>
-                                    <div className="mt-2 flex items-start space-x-3 xl:ml-3.5 xl:mt-0 xl:border-l xl:border-gray-400/50 xl:pl-3.5">
-                                        <dt className="mt-0.5">
-                                            <span className="sr-only">Location</span>
-                                            <MapPinIcon className="size-5 text-gray-400" aria-hidden="true" />
-                                        </dt>
-                                        <dd>{meeting.location}</dd>
+                                    <div className="mt-2 flex items-center space-x-3 xl:ml-3.5 xl:mt-0 xl:border-l xl:border-gray-400/50 xl:pl-3.5">
+                                        <MdPlace />
+                                        <span>{meeting.location}</span>
                                     </div>
                                 </dl>
                             </div>
